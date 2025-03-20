@@ -56,14 +56,14 @@ export default async function CategoryPage({
 
       <div className="space-y-6">
         {stories.map((story: Story) => (
-          <article key={story.id} className="bg-white rounded-lg border p-4">
+          <article key={story.id} className="bg-white/50 rounded-2xl border border-gray-100 p-4">
             <div className="flex items-start gap-2">
               {story.url ? (
                 <a
                   href={story.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-lg font-medium hover:text-blue-600 flex items-center gap-1 flex-1"
+                  className="text-md font-medium hover:text-blue-600 flex items-center gap-1 flex-1"
                 >
                   {story.titleZh || story.title}
                   <ArrowUpRight className="w-4 h-4 flex-shrink-0" />
