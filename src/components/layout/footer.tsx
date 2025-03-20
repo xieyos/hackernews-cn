@@ -1,23 +1,8 @@
 'use client'
 
 import { Twitter, Github } from 'lucide-react'
-import { useState, useEffect } from 'react'
 
 export function Footer() {
-  const [currentTime, setCurrentTime] = useState<string>('')
-
-  useEffect(() => {
-    // 初始化时间
-    setCurrentTime(new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }))
-
-    // 每秒更新时间
-    const timer = setInterval(() => {
-      setCurrentTime(new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }))
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [])
-
   return (
     <footer className="py-8 bg-opacity-0">
       <div className="container mx-auto px-4">
@@ -43,7 +28,6 @@ export function Footer() {
             </a>
           </div>
           <div className="flex flex-col items-center gap-2 text-center text-xs">
-            <p>Last Update: {currentTime}</p>
             <p>© 2024 HackerNews CN. All rights reserved.</p>
           </div>
         </div>
