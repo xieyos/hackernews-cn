@@ -21,15 +21,15 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: 'viggozhang',
-      url: 'https://github.com/viggozhang',
+      name: 'viggo',
+      url: 'https://github.com/ViggoZ',
     },
   ],
-  creator: 'viggozhang',
+  creator: 'viggo',
   openGraph: {
     type: 'website',
     locale: 'zh_CN',
-    url: 'https://hacknews.aimaker.dev',
+    url: 'https://hn.aimaker.dev',
     title,
     description,
     siteName: title,
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title,
     description,
     images: ['/og.webp'],
-    creator: '@viggozhang',
+    creator: '@viggo',
   },
   icons: {
     icon: [
@@ -76,5 +76,5 @@ export const metadata: Metadata = {
     ]
   },
   manifest: '/site.webmanifest',
-  metadataBase: new URL('https://hacknews.aimaker.dev'),
+  metadataBase: new URL('https://hn.aimaker.dev'),
 } 

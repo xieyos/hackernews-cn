@@ -23,7 +23,7 @@ interface PageProps {
 }
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 300; // 每5分钟重新验证一次
+export const revalidate = 300; // 每小时重新验证一次
 
 export default async function StoryPage({ params }: PageProps) {
   const story = await getStory(parseInt(params.id, 10)) as Story;

@@ -29,11 +29,17 @@
 - **Vercel Cron Jobs**: 定时任务处理
 - **Vercel Postgres**: 数据库服务
 
+## 开发环境要求
+
+- Node.js 18+
+- pnpm 8+
+- PostgreSQL（本地开发可选）
+
 ## 本地开发
 
 1. 克隆项目
 \`\`\`bash
-git clone [repository-url]
+git clone https://github.com/ViggoZ/hackernews-cn.git
 cd hackernews-cn
 \`\`\`
 
@@ -70,8 +76,18 @@ pnpm dev
 
 1. Fork 本项目到你的 GitHub 账号
 2. 在 Vercel 中导入项目
-3. 配置必要的环境变量
-4. 部署完成后即可访问
+3. 配置必要的环境变量：
+   - `DATABASE_URL`: 推荐使用 Vercel Postgres 数据库，在 Vercel 控制台中创建并获取连接 URL
+   - `OPENAI_API_KEY`: 从 OpenAI 获取的 API 密钥
+   - `NEXT_PUBLIC_APP_URL`: 您的 Vercel 部署 URL（例如：https://your-app.vercel.app）
+   - `CRON_SECRET`: 设置一个安全的随机字符串，用于保护定时任务 API
+4. 初始化数据库：
+   - 部署完成后，在 Vercel 控制台中打开项目
+   - 进入 "Storage" 标签页，创建 Postgres 数据库
+   - 数据库会自动完成初始化
+5. 部署完成后即可访问
+
+注意：项目已配置每小时自动更新内容，您可以在 Vercel 的 "Cron Jobs" 中监控定时任务的执行情况。
 
 ## 项目结构
 
@@ -89,17 +105,34 @@ pnpm dev
 ## 功能特性
 
 - 实时同步 HackerNews 最新内容
-- 智能翻译文章标题和内容
-- 支持查看原文链接
-- 评论系统的中英对照
-- 多种内容分类（最新、最热、Ask HN等）
-- 响应式设计，支持移动端访问
-- 快速的页面加载和转换
-- 定时更新内容确保信息及时性
+  - 每小时自动抓取最新内容
+  - 支持多种内容类型：最新、最热、Ask HN、Show HN、Jobs
+- 智能翻译
+  - 使用 OpenAI API 进行高质量翻译
+  - 支持标题和正文的中英对照显示
+  - 保留原文链接便于对照
+- 用户体验
+  - 现代简约的界面设计
+  - 响应式布局，完美支持移动端
+  - 快速的页面加载和转换
+  - 支持深色模式
+- 系统特性
+  - 基于 Vercel 的可靠部署
+  - PostgreSQL 数据持久化
+  - 自动的定时更新机制
+  - ISR 增量静态再生成
 
 ## 贡献指南
 
 欢迎提交 Pull Request 或创建 Issue！
+
+## 问题反馈
+
+如果您在使用过程中遇到任何问题，或有任何建议，请通过以下方式反馈：
+
+1. 在 GitHub 上提交 Issue
+2. 在 Twitter 上联系 [@decohack](https://twitter.com/decohack)
+3. 发送邮件至 [viggo.zw@gmail.com]（请替换为您的邮箱）
 
 ## 开源协议
 

@@ -5,7 +5,7 @@ import { zhCN } from 'date-fns/locale';
 import { ArrowUpRight, ArrowLeft } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 300; // 每5分钟重新验证一次
+export const revalidate = 3600; // 每小时重新验证一次
 
 interface Story {
   id: number;
@@ -114,12 +114,16 @@ export default async function CategoryPage({
         </Link>
         <span className="text-sm text-gray-500">第 {page} 页</span>
         <Link
-          href={`/category/${params.type}?page=${page + 1}`}
-          className="px-4 py-2 rounded-lg border hover:bg-gray-50"
+          href={`/category/${params.type}?page=${Math.min(Math.ceil(stories.length / pageSize), page + 1)}`}
+          className={`px-4 py-2 rounded-lg border ${
+            page === Math.ceil(stories.length / pageSize)
+              ? 'opacity-50 cursor-not-allowed'
+              : 'hover:bg-gray-50'
+          }`}
         >
           下一页
         </Link>
       </div>
     </main>
   );
-} 
+}

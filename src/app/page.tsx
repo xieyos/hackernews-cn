@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 300; // 每5分钟重新验证一次
+export const revalidate = 300; // 每小时重新验证一次
 
 interface Story {
   id: number;
@@ -141,7 +141,7 @@ export default async function Home() {
               </a>
               <div className="inline-flex items-center gap-2 text-sm text-gray-500 bg-white/50 px-4 py-2 rounded-full backdrop-blur-sm">
                 <Clock className="w-4 h-4" />
-                每5分钟自动更新
+                每小时自动更新
               </div>
             </div>
           </div>

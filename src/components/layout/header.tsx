@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Twitter } from 'lucide-react'
+import { Twitter, Github } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export function Header() {
@@ -41,15 +41,26 @@ export function Header() {
               <Link href="/category/show" className="hover:text-gray-600">展示</Link>
               <Link href="/category/jobs" className="hover:text-gray-600">工作</Link>
             </nav>
-            <a
-              href="https://twitter.com/viggozhang"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100/70 hover:bg-gray-100/90 transition-colors duration-200"
-            >
-              <Twitter className="w-4 h-4" />
-              <span className="sr-only">Twitter</span>
-            </a>
+            <div className="flex items-center space-x-2">
+              <a
+                href="https://github.com/ViggoZ/hackernews-cn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100/70 hover:bg-gray-100/90 transition-colors duration-200"
+              >
+                <Github className="w-4 h-4" />
+                <span className="sr-only">GitHub</span>
+              </a>
+              <a
+                href="https://twitter.com/decohack"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100/70 hover:bg-gray-100/90 transition-colors duration-200"
+              >
+                <Twitter className="w-4 h-4" />
+                <span className="sr-only">Twitter</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
