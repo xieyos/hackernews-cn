@@ -45,6 +45,16 @@ export default async function CategoryPage({
   try {
     const { stories, totalPages } = await getStories(type, page, pageSize);
 
+    // 如果请求的页码超出范围，重定向到第一页
+    if (page > totalPages && totalPages > 0) {
+      return {
+        redirect: {
+          destination: `/category/${params.type}?page=1`,
+          permanent: false,
+        },
+      };
+    }
+
     if (!stories || stories.length === 0) {
       return (
         <main className="container mx-auto max-w-7xl px-4 pt-24 pb-8">
@@ -58,6 +68,11 @@ export default async function CategoryPage({
         </main>
       );
     }
+
+    // 计算分页范围
+    const maxDisplayPages = 5;
+    const startPage = Math.max(1, page - Math.floor(maxDisplayPages / 2));
+    const endPage = Math.min(totalPages, startPage + maxDisplayPages - 1);
 
     return (
       <main className="container mx-auto max-w-7xl px-4 pt-24 pb-8">
@@ -116,28 +131,60 @@ export default async function CategoryPage({
           ))}
         </div>
 
-        <div className="flex justify-between items-center mt-8">
-          <Link
-            href={`/category/${params.type}?page=${Math.max(1, page - 1)}`}
-            className={`px-4 py-2 rounded-lg border ${
-              page === 1
-                ? 'opacity-50 cursor-not-allowed'
-                : 'hover:bg-gray-50'
-            }`}
-          >
-            上一页
-          </Link>
-          <span className="text-sm text-gray-500">第 {page} 页 / 共 {totalPages} 页</span>
-          <Link
-            href={`/category/${params.type}?page=${page + 1}`}
-            className={`px-4 py-2 rounded-lg border ${
-              page >= totalPages
-                ? 'opacity-50 cursor-not-allowed'
-                : 'hover:bg-gray-50'
-            }`}
-          >
-            下一页
-          </Link>
+        <div className="flex justify-center items-center gap-2 mt-8">
+          {page > 1 && (
+            <a
+              href={`/category/${params.type}?page=${page - 1}`}
+              className="px-4 py-2 rounded-lg border hover:bg-gray-50"
+            >
+              上一页
+            </a>
+          )}
+          
+          {page > 2 && (
+            <a
+              href={`/category/${params.type}?page=1`}
+              className="px-4 py-2 rounded-lg border hover:bg-gray-50"
+            >
+              1
+            </a>
+          )}
+          
+          {page > 3 && <span className="px-2">...</span>}
+          
+          {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map(p => (
+            <a
+              key={p}
+              href={`/category/${params.type}?page=${p}`}
+              className={`px-4 py-2 rounded-lg border ${
+                p === page
+                  ? 'bg-blue-50 text-blue-600 border-blue-200'
+                  : 'hover:bg-gray-50'
+              }`}
+            >
+              {p}
+            </a>
+          ))}
+          
+          {page < totalPages - 2 && <span className="px-2">...</span>}
+          
+          {page < totalPages - 1 && (
+            <a
+              href={`/category/${params.type}?page=${totalPages}`}
+              className="px-4 py-2 rounded-lg border hover:bg-gray-50"
+            >
+              {totalPages}
+            </a>
+          )}
+          
+          {page < totalPages && (
+            <a
+              href={`/category/${params.type}?page=${page + 1}`}
+              className="px-4 py-2 rounded-lg border hover:bg-gray-50"
+            >
+              下一页
+            </a>
+          )}
         </div>
       </main>
     );
