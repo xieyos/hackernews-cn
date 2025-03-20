@@ -28,7 +28,7 @@ export function Footer() {
             </a>
           </div>
           <div className="flex flex-col items-center gap-2 text-center text-xs">
-            <p>© 2024 HackerNews CN. All rights reserved.</p>
+            <p>© 2025 HackerNews CN. All rights reserved.</p>
           </div>
         </div>
       </div>
