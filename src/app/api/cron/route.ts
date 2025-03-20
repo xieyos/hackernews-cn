@@ -1,29 +1,33 @@
 import { NextResponse } from 'next/server';
-import { fetchStories, fetchMultipleStories, HNItem } from '@/lib/hn';
-import { translateStory } from '@/lib/translate';
+import { fetchStories, fetchMultipleStories, type HNItem } from '@/lib/hn';
 import { createStory, storyExists } from '@/lib/db';
-import { Story } from '@prisma/client';
+import { translateStory } from '@/lib/translate';
+
+interface DBStory {
+  id: number;
+  title: string;
+  titleZh: string | null;
+  type: 'story' | 'job';
+}
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // 5分钟超时
 
-// 验证请求是否来自定时任务
 function isValidCronRequest(request: Request) {
-  // 在生产环境中，你应该验证请求头中的密钥
   const authHeader = request.headers.get('authorization');
-  if (process.env.NODE_ENV === 'production' && process.env.CRON_SECRET) {
+  if (process.env.CRON_SECRET) {
     return authHeader === `Bearer ${process.env.CRON_SECRET}`;
   }
   return true;
 }
 
 // 将 HN 类型映射到数据库类型
-function mapHNTypeToDBType(hnType: string): Story['type'] {
+function mapHNTypeToDBType(hnType: string): 'story' | 'job' {
   switch (hnType) {
     case 'ask':
-      return 'ask';
+      return 'story';
     case 'show':
-      return 'show';
+      return 'story';
     case 'job':
       return 'job';
     default:
@@ -31,7 +35,13 @@ function mapHNTypeToDBType(hnType: string): Story['type'] {
   }
 }
 
-async function processStory(story: HNItem, type: string) {
+interface ProcessedStory {
+  id: number;
+  type: 'story' | 'job';
+  title: string;
+}
+
+async function processStory(story: HNItem, type: string): Promise<ProcessedStory | null> {
   if (!story) return null;
   
   try {
@@ -44,7 +54,7 @@ async function processStory(story: HNItem, type: string) {
       const savedStory = await createStory({
         ...story,
         type: dbType
-      }, translation);
+      }, translation) as DBStory;
       
       console.log(`文章处理完成: ${story.id} (类型: ${dbType})`);
       return {

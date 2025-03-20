@@ -45,12 +45,12 @@ export async function translateComment(comment: HNItem): Promise<{ textZh: strin
 }
 
 // 批量翻译，使用延迟来避免超出API限制
-export async function batchTranslate<T>(
+export async function batchTranslate<T, R>(
   items: T[],
-  translateFn: (item: T) => Promise<any>,
+  translateFn: (item: T) => Promise<R>,
   delayMs: number = 1000
-): Promise<any[]> {
-  const results = [];
+): Promise<(R | null)[]> {
+  const results: (R | null)[] = [];
   
   for (const item of items) {
     try {

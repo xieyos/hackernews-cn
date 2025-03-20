@@ -1,4 +1,4 @@
-import { getStories } from '@/lib/db';
+import { getStories, type StoryType } from '@/lib/db';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
@@ -19,7 +19,7 @@ interface Story {
   time: Date;
 }
 
-const typeMap: Record<string, string> = {
+const typeMap: Record<StoryType, string> = {
   top: '热门',
   new: '最新',
   best: '最佳',
@@ -27,6 +27,10 @@ const typeMap: Record<string, string> = {
   show: '展示',
   job: '工作',
 };
+
+function isValidStoryType(type: string): type is StoryType {
+  return type in typeMap;
+}
 
 export default async function CategoryPage({
   params,
@@ -37,7 +41,8 @@ export default async function CategoryPage({
 }) {
   const page = parseInt(searchParams.page || '1', 10);
   const pageSize = 20; // 每页显示20篇文章
-  const stories = await getStories(params.type, page, pageSize);
+  const type = isValidStoryType(params.type) ? params.type : 'top';
+  const stories = await getStories(type, page, pageSize);
 
   return (
     <main className="container mx-auto max-w-7xl px-4 pt-24 pb-8">
@@ -50,7 +55,7 @@ export default async function CategoryPage({
           返回首页
         </Link>
         <h1 className="text-3xl font-bold">
-          {typeMap[params.type] || params.type}
+          {typeMap[type]}
         </h1>
       </div>
 

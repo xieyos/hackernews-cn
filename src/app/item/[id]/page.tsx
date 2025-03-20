@@ -4,6 +4,18 @@ import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { ArrowUpRight } from 'lucide-react';
 
+interface Story {
+  id: number;
+  title: string;
+  titleZh: string | null;
+  url: string | null;
+  text: string | null;
+  textZh: string | null;
+  by: string;
+  score: number;
+  time: Date;
+}
+
 interface PageProps {
   params: {
     id: string;
@@ -14,7 +26,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 300; // 每5分钟重新验证一次
 
 export default async function StoryPage({ params }: PageProps) {
-  const story = await getStory(parseInt(params.id, 10));
+  const story = await getStory(parseInt(params.id, 10)) as Story;
 
   if (!story) {
     notFound();

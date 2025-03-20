@@ -3,6 +3,12 @@ import { fetchStories, fetchMultipleStories } from '@/lib/hn';
 import { translateStory } from '@/lib/translate';
 import { createStory, storyExists } from '@/lib/db';
 
+interface Story {
+  id: number;
+  title: string;
+  titleZh: string | null;
+}
+
 export async function GET() {
   try {
     // 先获取 new 类型的最新文章
@@ -13,7 +19,7 @@ export async function GET() {
     const newStories = await fetchMultipleStories(newStoryIds.slice(0, 30));
     console.log('获取到的最新故事详情:', newStories.map(s => ({ id: s.id, title: s.title })));
     
-    const results = [];
+    const results: Array<{ id: number; title: string }> = [];
     
     // 处理每个故事
     for (const story of newStories) {
@@ -33,7 +39,7 @@ export async function GET() {
           console.log(`故事 ${story.id} 翻译完成:`, translation);
 
           // 保存故事
-          const savedStory = await createStory(story, translation);
+          const savedStory = await createStory(story, translation) as Story;
           console.log(`故事 ${story.id} 保存完成`);
 
           results.push({
