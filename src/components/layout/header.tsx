@@ -35,11 +35,11 @@ export function Header() {
           <div className="flex items-center space-x-4">
             <nav className="hidden md:flex items-center space-x-6">
               <Link href="/category/top" className="hover:text-gray-600">热门</Link>
-              <Link href="/category/newest" className="hover:text-gray-600">最新</Link>
+              <Link href="/category/new" className="hover:text-gray-600">最新</Link>
               <Link href="/category/best" className="hover:text-gray-600">最佳</Link>
               <Link href="/category/ask" className="hover:text-gray-600">问答</Link>
               <Link href="/category/show" className="hover:text-gray-600">展示</Link>
-              <Link href="/category/jobs" className="hover:text-gray-600">工作</Link>
+              <Link href="/category/job" className="hover:text-gray-600">工作</Link>
             </nav>
             <div className="flex items-center space-x-2">
               <a

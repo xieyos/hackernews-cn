@@ -6,16 +6,20 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
-export const prisma = global.prisma || new PrismaClient({
-  log: ['error'],
-});
+const prismaClientSingleton = () => {
+  return new PrismaClient({
+    log: ['error'],
+  })
+}
+
+export const prisma = globalThis.prisma ?? prismaClientSingleton()
 
 if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma;
+  globalThis.prisma = prisma
 }
 
 // 添加重试逻辑的包装函数
-async function withRetry<T>(operation: () => Promise<T>, maxRetries = 3): Promise<T> {
+async function withRetry<T>(operation: () => Promise<T>, maxRetries = 5): Promise<T> {
   let lastError: Error | undefined;
   
   for (let i = 0; i < maxRetries; i++) {
@@ -23,10 +27,17 @@ async function withRetry<T>(operation: () => Promise<T>, maxRetries = 3): Promis
       return await operation();
     } catch (error) {
       lastError = error as Error;
+      console.error(`尝试第 ${i + 1} 次失败:`, error);
+      
       if (i === maxRetries - 1) break;
       
-      // 等待一段时间后重试
-      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+      // 如果是连接错误，尝试重新连接
+      if (error instanceof Error && error.message.includes('connection')) {
+        await prisma.$connect();
+      }
+      
+      // 指数退避重试
+      await new Promise(resolve => setTimeout(resolve, Math.min(1000 * Math.pow(2, i), 10000)));
     }
   }
   
@@ -116,7 +127,7 @@ export async function getStories(
       const baseQuery = {
         deleted: false,
         dead: false,
-        type: type === 'top' || type === 'new' || type === 'best' ? 'story' : type,
+        type: type === 'new' ? 'story' : (type === 'top' || type === 'best' ? 'story' : type),
       };
 
       let orderBy: OrderBy;
@@ -134,18 +145,31 @@ export async function getStories(
           orderBy = [{ score: 'desc' }, { time: 'desc' }];
       }
 
-      const stories = await prisma.story.findMany({
-        where: baseQuery,
-        orderBy,
-        skip,
-        take: pageSize,
-      });
+      const [stories, total] = await Promise.all([
+        prisma.story.findMany({
+          where: baseQuery,
+          orderBy,
+          skip,
+          take: pageSize,
+        }),
+        prisma.story.count({
+          where: baseQuery,
+        })
+      ]);
 
-      return stories;
+      return {
+        stories,
+        total,
+        totalPages: Math.ceil(total / pageSize)
+      };
     });
   } catch (error) {
     console.error('查询文章失败:', error instanceof Error ? error.message : error);
-    return [];
+    return {
+      stories: [],
+      total: 0,
+      totalPages: 0
+    };
   }
 }
 
