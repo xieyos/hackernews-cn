@@ -13,6 +13,8 @@ import {
   Newspaper,
   ExternalLink
 } from 'lucide-react';
+import { Features } from '@/components/home/Features';
+import { FAQ } from '@/components/home/FAQ';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 300; // 每小时重新验证一次
@@ -163,6 +165,9 @@ export default async function Home() {
           </div>
         </div>
       </div>
+
+      <FAQ />
+      <Features />
     </div>
   );
 }
