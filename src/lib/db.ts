@@ -73,7 +73,7 @@ type OrderBy = {
   time?: 'asc' | 'desc';
 }[];
 
-export async function getStoriesByTypes(types: StoryType[], pageSize: number = 8) {
+export async function getStoriesByTypes(types: StoryType[], pageSize: number = 10) {
   try {
     const results = await withRetry(async () => {
       const queries = types.map(type => {
@@ -81,6 +81,11 @@ export async function getStoriesByTypes(types: StoryType[], pageSize: number = 8
           deleted: false,
           dead: false,
           type: type === 'top' || type === 'new' || type === 'best' ? 'story' : type,
+          ...(type === 'top' ? {
+            time: {
+              gte: new Date(Date.now() - 24 * 60 * 60 * 1000)
+            }
+          } : {})
         };
 
         let orderBy: OrderBy;
