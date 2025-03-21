@@ -34,7 +34,7 @@ export function Header() {
           </Link>
           <div className="flex items-center space-x-4">
             <nav className="hidden md:flex items-center space-x-6">
-              <Link href="/category/top" className="hover:text-gray-600">热门</Link>
+              <Link href="/category/top" className="hover:text-gray-600">24小时热榜</Link>
               <Link href="/category/new" className="hover:text-gray-600">最新</Link>
               <Link href="/category/best" className="hover:text-gray-600">最佳</Link>
               <Link href="/category/ask" className="hover:text-gray-600">问答</Link>

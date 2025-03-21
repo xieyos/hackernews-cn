@@ -14,7 +14,7 @@ const features = [
   {
     icon: <BookOpen className="w-6 h-6" />,
     title: '多类型内容',
-    description: '包含热门文章、最新资讯、问答讨论、项目展示等多种类型的内容，满足不同阅读需求。'
+    description: '包含24小时热门文章、最新资讯、问答讨论、项目展示等多种类型的内容，满足不同阅读需求。'
   },
   {
     icon: <Sparkles className="w-6 h-6" />,

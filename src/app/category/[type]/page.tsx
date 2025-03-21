@@ -19,7 +19,7 @@ interface Story {
 }
 
 const typeMap: Record<StoryType, string> = {
-  top: '热门',
+  top: '24小时热榜',
   new: '最新',
   best: '最佳',
   ask: '问答',
