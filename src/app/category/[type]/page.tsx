@@ -21,7 +21,7 @@ interface Story {
 const typeMap: Record<StoryType, string> = {
   top: '24小时热榜',
   new: '最新',
-  best: '最佳',
+  week: '一周热榜',
   ask: '问答',
   show: '展示',
   job: '工作',

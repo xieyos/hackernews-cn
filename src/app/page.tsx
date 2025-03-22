@@ -107,8 +107,8 @@ function StoryCard({ title, type, stories, icon }: StoryCardProps) {
 export default async function Home() {
   const types: Array<{ value: StoryType; label: string; icon: React.ReactNode }> = [
     { value: 'top', label: '24小时热榜', icon: <Flame className="w-4 h-4" /> },
+    { value: 'week', label: '一周热榜', icon: <Trophy className="w-4 h-4" /> },
     { value: 'new', label: '最新', icon: <Clock className="w-4 h-4" /> },
-    { value: 'best', label: '最佳', icon: <Trophy className="w-4 h-4" /> },
     { value: 'ask', label: '问答', icon: <HelpCircle className="w-4 h-4" /> },
     { value: 'show', label: '展示', icon: <Layout className="w-4 h-4" /> },
     { value: 'job', label: '工作', icon: <Briefcase className="w-4 h-4" /> },

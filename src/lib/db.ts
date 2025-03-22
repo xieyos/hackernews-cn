@@ -66,7 +66,7 @@ export async function createStory(item: HNItem, translation: { titleZh: string; 
   }));
 }
 
-export type StoryType = 'top' | 'new' | 'best' | 'ask' | 'show' | 'job';
+export type StoryType = 'top' | 'new' | 'week' | 'ask' | 'show' | 'job';
 
 type OrderBy = {
   score?: 'asc' | 'desc';
@@ -80,10 +80,15 @@ export async function getStoriesByTypes(types: StoryType[], pageSize: number = 1
         const baseQuery = {
           deleted: false,
           dead: false,
-          type: type === 'top' || type === 'new' || type === 'best' ? 'story' : type,
+          type: type === 'top' || type === 'new' || type === 'week' ? 'story' : type,
           ...(type === 'top' ? {
             time: {
               gte: new Date(Date.now() - 24 * 60 * 60 * 1000)
+            }
+          } : {}),
+          ...(type === 'week' ? {
+            time: {
+              gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
             }
           } : {})
         };
@@ -96,7 +101,7 @@ export async function getStoriesByTypes(types: StoryType[], pageSize: number = 1
           case 'new':
             orderBy = [{ time: 'desc' }];
             break;
-          case 'best':
+          case 'week':
             orderBy = [{ score: 'desc' }];
             break;
           default:
@@ -132,7 +137,17 @@ export async function getStories(
       const baseQuery = {
         deleted: false,
         dead: false,
-        type: type === 'new' ? 'story' : (type === 'top' || type === 'best' ? 'story' : type),
+        type: type === 'new' ? 'story' : (type === 'top' || type === 'week' ? 'story' : type),
+        ...(type === 'top' ? {
+          time: {
+            gte: new Date(Date.now() - 24 * 60 * 60 * 1000)
+          }
+        } : {}),
+        ...(type === 'week' ? {
+          time: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+          }
+        } : {})
       };
 
       let orderBy: OrderBy;
@@ -143,7 +158,7 @@ export async function getStories(
         case 'new':
           orderBy = [{ time: 'desc' }];
           break;
-        case 'best':
+        case 'week':
           orderBy = [{ score: 'desc' }];
           break;
         default:
