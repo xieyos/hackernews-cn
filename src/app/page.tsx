@@ -96,6 +96,18 @@ function StoryCard({ title, type, stories, icon }: StoryCardProps) {
                   locale: zhCN,
                 })}
               </span>
+              <span className="flex items-center gap-1">
+                <span className="inline-block w-1 h-1 rounded-full bg-orange-500"></span>
+                <a
+                  href={`https://news.ycombinator.com/item?id=${story.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-600"
+                >
+                  原帖
+                  <ExternalLink className="inline-block w-3 h-3 ml-0.5" />
+                </a>
+              </span>
             </div>
           </article>
         ))}

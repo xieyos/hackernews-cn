@@ -2,7 +2,7 @@ import { getStories, type StoryType } from '@/lib/db';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
-import { ArrowUpRight, ArrowLeft } from 'lucide-react';
+import { ArrowUpRight, ArrowLeft, ExternalLink } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -123,6 +123,16 @@ export default async function CategoryPage({
                     locale: zhCN,
                   })}
                 </span>
+                <span className="mx-2">•</span>
+                <a
+                  href={`https://news.ycombinator.com/item?id=${story.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-600 inline-flex items-center"
+                >
+                  原帖
+                  <ExternalLink className="w-3 h-3 ml-0.5" />
+                </a>
               </div>
               {story.text && story.textZh && (
                 <div className="mt-3 text-sm text-gray-700">{story.textZh}</div>

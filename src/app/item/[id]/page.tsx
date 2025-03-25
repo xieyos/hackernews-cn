@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { getStory } from '@/lib/db';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ExternalLink } from 'lucide-react';
 
 interface Story {
   id: number;
@@ -63,6 +63,16 @@ export default async function StoryPage({ params }: PageProps) {
                   locale: zhCN,
                 })}
               </span>
+              <span className="mx-2">•</span>
+              <a
+                href={`https://news.ycombinator.com/item?id=${story.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-600 inline-flex items-center"
+              >
+                原帖
+                <ExternalLink className="w-4 h-4 ml-0.5" />
+              </a>
             </div>
           </div>
         </div>
